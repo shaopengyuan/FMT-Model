@@ -184,7 +184,13 @@ for n = 1:LogHeader.num_bus
     BusName = deblank(LogHeader.bus(n).name);
     
     % find timestamp
-    timestamp_id = find_timestamp_element(LogHeader.bus(n));
+    timestamp_id = 0;
+    for k = 1:LogHeader.bus(n).num_elem
+        ElemName = deblank(LogHeader.bus(n).elem_list(k).name);
+        if strcmp(ElemName, "timestamp_ms") || strcmp(ElemName, "timestamp")
+            timestamp_id = k;
+        end
+    end
     
     if timestamp_id <= 0
        fprintf("can't find timestamp element in %s\n", LogHeader.bus(n).name);
@@ -215,15 +221,3 @@ for n = 1:LogHeader.num_bus
     fprintf("Save to path:%s\n", out_file);
 end    
 end
-
-function timestamp_id = find_timestamp_element(BusHeader)
-timestamp_id = 0;
-for k = 1:BusHeader.num_elem
-    ElemName = deblank(BusHeader.elem_list(k).name);
-    if strcmp(ElemName, "timestamp_ms") || strcmp(ElemName, "timestamp")
-        timestamp_id = k;
-        return;
-    end
-end
-end
-
