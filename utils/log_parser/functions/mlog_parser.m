@@ -196,10 +196,10 @@ for n = 1:LogHeader.num_bus
        fprintf("can't find timestamp element in %s\n", LogHeader.bus(n).name);
        continue;
     elseif isempty(LogMsg{index}{timestamp_id})
-       % empty bus, skip it
+       fprintf("empty timestamp element in %s\n", LogHeader.bus(n).name);
        continue;
     else
-       time_stamp = double(LogMsg{index}{timestamp_id}-LogMsg{index}{timestamp_id}(1)) * 0.001;   % milli second to second
+       time_stamp = double(LogMsg{index}{timestamp_id}) * 0.001;   % milli second to second
     end
     
     % construct Bus variable
@@ -221,4 +221,3 @@ for n = 1:LogHeader.num_bus
     fprintf("Save to path:%s\n", out_file);
 end    
 end
-
